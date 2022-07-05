@@ -1,0 +1,115 @@
+\chapter{Структуры данных пакетов}
+\label{cha:appendix6}
+\begin{longtable}[c]{|lll|}
+	\caption{Структура данных пакета 0x00F5} \label{tab:formatf5}\\
+	\hline
+	Название поля & Тип данных & Содержимое \\
+	\hline
+	time & double & Время измерений, мс (UTC) \\
+	week & uint16 & Номер недели \\
+	dGPSUTC & double & Разность времен GPS-UTC, мс \\
+	dGLNUTC & double & Разность времен ГЛОНАСС-UTC, мс \\
+	TimeScaleCorrection & int8 & Коррекция шкалы приемника, мс \\
+	type & int8 & Тип сигнала \\
+	SgnID & int8 & Номер спутника (с единицы) \\
+	Lit & int8 & Частотная литера (для ГЛОНАСС) \\
+	q & int8 & Уровень сигнала, дБГц \\
+	phase & double & Псевдофаза сигнала, циклы \\
+	range & double & Полная псевдодальность, мс \\
+	doppler & double & Доплеровская частота, Гц \\
+	flags & int8 & Флаги измерений \\
+	\hline	
+\end{longtable}
+\newpage
+\begin{longtable}[c]{|lll|}
+	\caption{Структура данных пакета 0x00F7 для спутников GPS} \label{tab:formatf7gps}\\
+	\hline
+	Название поля & Тип данных & Содержимое \\
+	\hline
+	GnssType & uint8 & Тип спутниковой системы \\
+	SatNum & uint8 & Номер спутника \\
+	Crs & float & $C_{rc}$ , м \\
+	Dn & float & $\Delta n$, рад/мс \\
+	M0 & double &  $M_0$, рад \\
+	Cuc & float & $C_{uc}$, рад\\
+	e & double & е \\
+	Cus & float & $C_{us}$, рад \\
+	sqrtA & double & $\sqrt{A}, м^{1/2}$ \\
+	toe & double & $t_{oe}$, мс \\
+	Cic & float & $C_{ic}$, рад \\
+	Omega0 & double & $\Omega_{0}$, рад \\
+	Cis & float & $C_{is}$, рад \\
+	i0 & double & $i_{0}$, рад \\
+	Crc & float & $C_{rc}$, рад \\
+	omega & double & $\omega$, рад \\
+	OmegaDot & double & $\dot{\Omega}$, рад/мс \\
+	iDot & double & $\dot{\Omega}$, рад/мс \\
+	Tgd & float & $IDOT$, рад/мс \\
+	toc & double & $T_{GD}$, мс \\
+	af2 & float & $a_{f2},\;мс/мс^2$ \\
+	af1 & float & $a_{f1},\;мс/мс$ \\
+	af0 & float & $a_{f0},\;мс$ \\
+	URA & uint16 &  \\
+	IODE & uint16 &  \\
+	IODC & uint16 &  \\
+	codeL2 & uint16 & C/A OR P ON L2 \\
+	L2P & uint16 & L2 P DATA FLAG \\
+	week & uint16 & Номер недели \\
+	\hline	
+\end{longtable}
+\newpage
+\begin{longtable}[c]{|lll|}
+	\caption{Структура данных пакета 0x00F7 для спутников ГЛОНАСС} \label{tab:formatf7glo}\\
+	\hline
+	Название поля & Тип данных & Содержимое \\
+	\hline
+	GnssType & uint8 & Тип спутниковой системы \\
+	SatNum & uint8 & Номер спутника \\
+	Lit & int8 & $x_{n}(t_b)$ , м \\
+	X & double & $\Delta n$, рад/мс \\
+	Y & double &  $M_0$, рад \\
+	Z & double & $C_{uc}$, рад\\
+	Vx & double & е \\
+	Vy & double & $C_{us}$, рад \\
+	Vz & double & $\sqrt{A}, м^{1/2}$ \\
+	Ax & double & $t_{oe}$, мс \\
+	Ay & double & $C_{ic}$, рад \\
+	Az & double & $\Omega_{0}$, рад \\
+	tb & double & $C_{is}$, рад \\
+	gamman & float & $i_{0}$, рад \\
+	taun & float & $C_{rc}$, рад \\
+	En & uint16 & $\omega$, рад \\
+	\hline	
+\end{longtable}
+
+\chapter{Разработка алгоритма}
+\section{Программный модуль для обработки пакетов данных}
+\label{cha:appendix1}
+\lstinputlisting[language=C]{main.c}
+
+\newpage
+\section{Функция для расчёта контрольной суммы}
+\label{cha:appendix2}
+
+\lstinputlisting[language=C]{crc.c}
+
+\chapter{Имплементация протокола в RTKLIB}
+
+\section{Структура <<raw\_t>>}
+\label{cha:appendix3}
+
+\lstinputlisting[language=C]{raw.c}
+\newpage
+\section{Функция <<decode\_srns>>}
+\label{cha:appendix4}
+
+\lstinputlisting[language=C]{decodesrns.c}
+
+\section{Функция <<input\_srns>>}
+\label{cha:appendix5}
+
+\lstinputlisting[language=C]{inputsrns.c}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "rpz"
+%%% End: 

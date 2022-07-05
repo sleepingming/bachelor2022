@@ -1,0 +1,285 @@
+\chapter{Структура RTKLIB, описание интерфейсов}
+\label{cha:analysis}
+
+RTKLIB состоит из программной библиотеки и
+вспомогательных программ. Также включает в себя стандартные функции и алгоритмы для обработки ГНСС: функции спутниковых систем навигации, матричные и векторные функции, расчет времени и строковые функции, функции преобразования координат, трассировка, поддержка систем позиционирования, расчет эфемерид и множество других функций.
+
+Состав RTKLIB:
+\begin{itemize}
+	\item RTKLAUNCH
+	\item RTKNAVI
+	\item STRSVR
+	\item RTKPOST
+	
+	\item RTKCONV
+	\item RTKPLOT
+	\item RTKGET
+	\item SRCTBLBROWS
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/all}
+		\caption{Демонстрация всех приложений библиотеки}
+		\label{fig:all}
+	\end{figure}
+\end{itemize}
+
+
+
+\section{RTKLAUNCH}
+Данный модуль является первым приложением библиотеки и включает в себя ссылки на составные программы.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/rtklaunch}
+	\caption{Демонстрация окна RTKLAUNCH}
+	\label{fig:rtklaunch}
+\end{figure}
+
+RTKLAUNCH представляет собой интерфейс для удобного переключения между остальными вспомогательными программами.
+
+
+\section{RTKNAVI}
+
+Этот модуль имеет способность осуществлять позиционирование в реальном времени. На вход подаются сырые наблюдения, сформированные приемником, а на выходе мы получаем навигационные определения и решение навигационной задачи по данным первычным наблюдениям. Также можно настраивать выходной поток данных и записывать лог-файлы, что очень полезно для позиционирования в реальном времени.
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.7\textwidth]{inc/svg/modules/rtknavi}
+	\caption{Демонстрация окна RTKNAVI}
+	\label{fig:rtknavi}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.89\textwidth]{inc/svg/modules/rtklibdataflow}
+	\caption{Структурная схема работы RTKNAVI}
+	\label{fig:rtklibdataflow}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=1.04\textwidth]{inc/svg/modules/rtklibdatastruct}
+	\caption{Структуры данных RTKNAVI}
+	\label{fig:rtklibdatastruct}
+\end{figure}
+
+Существует множество опций также и для подачи входных данных. Можно обрабатывать данные различных типов. Ниже приведены поддерживаемые библиотекой типы данных и их краткое описание.
+\begin{longtable}{|p{4cm}|p{12cm}|}
+	\caption{Типы принимаемых данных и их описание} \label{tab:types}\\
+	\hline
+	Тип данных & Описание \\
+	\hline
+	Serial & Приём данных через последовательный порт (RS232C или USB) \\
+	\hline
+	TCP Client & Соединение с TCP сервером и приём данных по протоколу TCP \\
+	\hline
+	TCP Server & Принятие TCP соединения клиента и приём данных по протоколу TCP. \\
+	\hline
+	NTRIP Client & Соединение с кастером NTRIP и приём данных по протоколу NTRIP. \\
+	\hline
+	File & Приём данных из лог-файла \\
+	\hline
+	FTP & Приём данных после загрузки файла с помощью FTP \\
+	\hline
+	HTTP & Приём данных после загрузки файла с помощью HTTP \\
+	\hline
+\end{longtable}
+\FloatBarrier
+
+Описание структур данных пакетов 0x00F5 и 0x00F7 приведены в приложении ~\ref{cha:appendix6}.
+
+Также библиотека поддерживает обработку данных различных форматов и по различным протоколам. Ниже приведён список поддерживаемых форматов и их краткое описание.
+
+\begin{longtable}{|p{4cm}|p{12cm}|}
+	\caption{Форматы приёма данных и их описание} \label{tab:format}\\
+	\hline
+	Формат данных & Описание \\
+	\hline
+	RTCM2 & RTCM 2.3 \\
+	\hline
+	RTCM3  & RTCM 3.0, 3.1 (с поправкой 1‐5) и 3.2 \\
+	\hline
+	NovAtel OEM6 & Двоичный формат NovAtel OEM4/V/6 и OEMStar  \\
+	\hline
+	NovAtel OEM3  & Двоичный формат NovAtel OEM3 (Millennium) \\
+	\hline
+	u‐blox  & Двоичный формат u‐blox LEA‐4T, 5T и 6T  \\
+	\hline
+	Superstar II  & Двоичный формат NovAtel Superstar II  \\
+	\hline
+	\end{longtable}
+	\newpage
+	\begin{longtable}{|p{4cm}|p{12cm}|}
+	\multicolumn{2}{r}{... продолжение таблицы \ref{tab:format}}\\ [1em] 
+	\hline
+	Hemisphere & Двоичный формат Hemisphere Crescent/Eclipse  \\
+	\hline
+	SkyTraq  & Двоичный формат SkyTraq S1315F  \\
+	\hline
+	GW10 &  Двоичный формат Furuno GW‐10‐II/III  \\
+	\hline
+	Javad  & Двоичный формат JAVAD GRIL/GREIS  \\
+	\hline
+	NVS BINR & NVS NV08C BINR \\
+	\hline
+	BINEX  & BINEX format (поддерживает только big‐endian, forward, regular CRC) \\
+	\hline
+	SP3  & SP3 точные эфемериды \\
+	\hline
+\end{longtable}
+
+Основной задачей данной работы является, как раз, пополнение данного списка протоколом SRNS.
+
+\subsection{Обработка файла по протоколу NVS BINR}
+Для проверки работоспособности RTKNAVI можем подать на вход модуля двоичный лог-файл с наблюдениями, сформированными навигационным приёмником по протоколу NVS BINR. В результате мы должны получить решение навигационной задачи и таблицы, отображающие различную информацию, которая может быть полезна для нашего анализа: эфемериды, сырые данные, параметры сигналов, принимаемые пакеты и т.д.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.7\textwidth]{inc/svg/modules/rtknavitest}
+	\caption{Расположение спутников}
+	\label{fig:rtknavitest}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.7\textwidth]{inc/svg/modules/rtknaviobs}
+	\caption{Данные наблюдений}
+	\label{fig:rtknaviobs}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.7\textwidth]{inc/svg/modules/rtknavinavgps}
+	\caption{Параметры спутников GPS}
+	\label{fig:rtknavinavgps}
+\end{figure}
+\newpage
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.7\textwidth]{inc/svg/modules/rtknavinavglo}
+	\caption{Параметры спутников ГЛОНАСС}
+	\label{fig:rtknavinavglo}
+\end{figure}
+\section{STRSVR}
+Для относительного позиционирования, такого как RTK-GPS/GNSS, приёмник ровера и приёмник базовой станции обычно размещаются на разных участках. В других случаях пользователь может использовать результат определения местоположения в другом месте, удалённом от этих приёмников. Для соединения этих мест друг с другом, пользователь должен установить каналы передачи данных. Данное приложение представляет собой утилиту сервера связи для упрощения настройки каналов связи. С помощью STRSVR пользователь может настраивать поток входных и выходных данных по этим каналам связи. Также данный модуль имеет функцию ретрансляции для разделения потока данных для определения местоположения в реальном времени с помощью RTKNAVI.
+
+Например, чтобы получить наблюдения удалённой базовой станции на приёмнике ровера и получить решение RTK-GPS, пользователь может разместить удалённый компьютер с установленным STRSVR и, подключившись к приёмнику базовой станции, настроить STRSVR для отправки данных роверу.
+
+
+Ниже приведены примеры совместного использования приложений RTKNAVI и STRSVR.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.9\textwidth]{inc/svg/modules/strsvr1}
+	\caption{Single-point позиционирование и вывод решений в файл}
+	\label{fig:strsvr1}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.9\textwidth]{inc/svg/modules/strsvr2}
+	\caption{Single-point позиционирование, вывод решений на устройство, вывод лог-данных в файл}
+	\label{fig:strsvr2}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.9\textwidth]{inc/svg/modules/strsvr3}
+	\caption{RTK-GPS/GNSS позиционирование, ввод данных с ровера и базовой станции, вывод решений в файл}
+	\label{fig:strsvr3}
+\end{figure}
+\FloatBarrier
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.9\textwidth]{inc/svg/modules/strsvrmain}
+	\caption{Демонстрация главного окна STRSVR}
+	\label{fig:strsvrmain}
+\end{figure}
+
+С помощью пункта меню <<(0) Input>> можно выбирать тип входного потока. Поддерживаемые типы:
+\begin{itemize}
+	\item[$\triangleright$] Serial
+	\item[$\triangleright$] TCP-клиент
+	\item[$\triangleright$] TCP-сервер
+	\item[$\triangleright$] NTRIP-клиент
+	\item[$\triangleright$] Файл
+	\item[$\triangleright$] FTP
+	\item[$\triangleright$] HTTP
+\end{itemize}
+Также есть возможность задать параметры потока или команду запуска/выключения и входные потоки для RTKNAVI.
+
+Настройка выходных потоков производится с помощью пунктов (1), (2) или (3). Для выходных потоков такие же настройки, как и для лог-потоков в RTKNAVI.
+
+\section{RTKPOST}
+
+Данное приложение способно осуществлять постобработку. RTKPOST получает на вход файлы наблюдений и навигационных сообщений (GPS, ГЛОНАСС, Galileo, QZSS, BeiDou и SBAS) в формате RINEX (2.10, 2.11,
+2.12, 3.00, 3.01, 3.02) и может получать решение навигационной задачи с помощью различных техник позиционирования, включая Single‐point, DGPS/DGNSS, Kinematic, Static, PPP‐Kinematic и PPP‐Static.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/rtkpost}
+	\caption{Демонстрация главного окна RTKPOST}
+	\label{fig:rtkpost}
+\end{figure}
+
+С помощью меню <<Options...>> можно настраивать параметры обработки и параметры позиционирования для RTKNAVI и RTKPOST. Также можно установить время начала и время окончания наблюдения.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/rtkpostsolv}
+	\caption{Пример решения навигационной задачи с помощью RTKPOST}
+	\label{fig:rtkpostsolv}
+\end{figure}
+
+\section{RTKCONV}
+RINEX -- это стандартный формат данных GPS/GNSS, поддерживаемый многими
+приемниками или программными обеспечениями для постобработки GPS/GNSS. RTKPOST также может обрабатывать файлы RINEX в качестве входных данных, но перед этим необходима некоторая подготовка файлов к обработке. Возможность такой подготовки предоставляет приложение RTKCONV, который преобразует сырые данные приёмника, RTCM и BINEX сообщения в RINEX OBS (данные наблюдений) и RINEX NAV (навигационные сообщения GNSS). Также RTKCONV может извлекать сообщения SBAS из сырых данных, полученных с приёмника, и выводить их в лог-файл SBAS.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/rtkconv}
+	\caption{Демонстрация главного окна RTKCONV}
+	\label{fig:rtkconv}
+\end{figure}
+
+\section{RTKPLOT}
+Данное приложение осуществляет построение решений позиционирования с помощью RTKPOST и RTKNAVI, используя графический пользовательский интерфейс. RTKPLOT также может принимать файлы или потоки по стандарту NMEA 0183 для создания графика решения. Есть возможность отображать E/N/U компоненты положения, скорости и ускорения приёмника. 
+
+С помощью пункта меню <<File $\Rightarrow$ Open map Image>> можно выбрать изображение карты в формате JPEG и сделать его фоном решения в разделе <<Gnd Trk>>. Начиная с версии 2.4.2 в RTKPLOT можно отображать решения НЗ используя Google Earth.
+
+Также RTKPLOT имеет функцию отображения видимых спутников различных навигационных систем, их орбиты и прочие параметры.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.5\textwidth]{inc/svg/modules/rtkplot}
+	\caption{Пример решения навигационной задачи в RTKPLOT}
+	\label{fig:rtkplot}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.5\textwidth]{inc/svg/modules/rtkplotmap}
+	\caption{Пример вставки изображения карты на фоне решения в RTKPLOT}
+	\label{fig:rtkplotmap}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.5\textwidth]{inc/svg/modules/rtkplotgoogle}
+	\caption{Пример отображения решения с помощью Google Earth}
+	\label{fig:rtkplotgoogle}
+\end{figure}
+\clearpage
+\begin{figure}[h!]
+	\centering
+	\includegraphics[keepaspectratio, width=0.6\textwidth]{inc/svg/modules/rtkplotsat}
+	\caption{Демонстрация отображения видимых спутников}
+	\label{fig:rtkplotsat}
+\end{figure}
+\section{RTKGET}
+Для анализа техники позиционирования PPP пользователю вероятнее всего придётся загрузить IGS, для получения точной информации об орбите спутника и часах. В других случаях может потребоваться загрузить данные наблюдений сети CORS из архива данных GNSS через интернет. Утилита RTKGET предоставляет удобный способ загрузки этих данных для дальнейшего использования в целях обработки навигационных данных.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.5\textwidth]{inc/svg/modules/rtkget}
+	\caption{Демонстрация отображения видимых спутников}
+	\label{fig:rtkget}
+\end{figure}
+
+\section{SRCTBLBROWS}
+Данное приложение представляет собой NTRIP Browser. NTRIP -- это протокол связи для обмена данными GPS/GNSS, такими как: сырые наблюдения приёмника, эфемериды, поправки для DGPS или RTK‐GPS. NTRIP задаёт формат таблицы так называемой <<исходной таблицы>>, которая представляет список данных, предоставляемых серверами NTRIP. RTKLIB включает в себя простой браузер для исходных таблиц NTRIP\cite{rtklib}.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[keepaspectratio, width=0.8\textwidth]{inc/svg/modules/ntrip}
+	\caption{Демонстрация главного окна SRCTBLBROWS}
+	\label{fig:ntrip}
+\end{figure}
+
+
